@@ -14,18 +14,15 @@ class CreateRatingsTable extends Migration
     public function up()
     {
         Schema::create('ratings', function (Blueprint $table) {
-            $table->id();
+            $table->increments('rating_id');
+            $table->integer('restaurant_id')->unsigned()->index();
+            $table->foreign('restaurant_id')->references('restaurant_id')->on('restaurants')->onDelete('cascade');
+            $table->integer('score');
+            $table->text('review');
+
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('ratings');
-    }
+   
 }
