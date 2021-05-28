@@ -4,6 +4,10 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
+use App\Models\Model\Restaurant;
+
+use App\Models\Model\Rating;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -13,6 +17,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        \App\Models\Model\Restaurant::factory(60)->create();
+        \App\Models\Model\Rating::factory(60)->create();
+
     }
 }
