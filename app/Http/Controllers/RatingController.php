@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Model\Rating;
+use App\Http\Resources\RatingResource;
+use App\Models\Model\Restaurant;
 use Illuminate\Http\Request;
 
 class RatingController extends Controller
@@ -12,9 +14,9 @@ class RatingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Restaurant $restaurant)
     {
-        //
+        return RatingResource::collection($restaurant->ratings);
     }
 
     /**
