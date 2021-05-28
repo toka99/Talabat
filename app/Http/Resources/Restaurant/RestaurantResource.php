@@ -24,6 +24,12 @@ class RestaurantResource extends JsonResource
             'delivery_fees' => $this->delivery_fees,
             'first_name_vendor' => $this->first_name_vendor,
             'last_name_vendor' => $this->last_name_vendor,
+            'ratings' => $this->ratings->count() > 0 ? round($this->ratings->sum('overall_score')/
+               $this->ratings->count(),0) : 'There are currently no reviews available for this restaurant',
+
+            'href' => [
+                'ratings' => route('ratings.index',$this->id)
+            ]
             
         ];
     }

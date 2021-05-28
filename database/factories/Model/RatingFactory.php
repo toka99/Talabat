@@ -28,7 +28,12 @@ class RatingFactory extends Factory
         //         return Restaurant::all()->random();
         //     },
             'restaurant_id' => $this->faker->randomElement($restaurants), 
-            'score' => $this->faker->numberBetween(0,5),
+            'order_packaging_score' => $this->faker->numberBetween(0,5),
+            'delivery_time_score' => $this->faker->numberBetween(0,5),
+            'value_for_money_score' => $this->faker->numberBetween(0,5),
+            'quality_of_food_score' => $this->faker->numberBetween(0,5),
+            'driver_performance_score' => $this->faker->numberBetween(0,5),
+            'overall_score' => $this->faker->numberBetween(0,5),
             'review' => $this->faker->paragraph,
         ];
     }
