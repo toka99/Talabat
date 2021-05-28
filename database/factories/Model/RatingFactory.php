@@ -22,7 +22,7 @@ class RatingFactory extends Factory
      */
     public function definition()
     {
-        $restaurants = Restaurant::all()->pluck('restaurant_id')->toArray();
+        $restaurants = Restaurant::all()->pluck('id')->toArray();
         return [
         //     'restaurant_id' => function(){
         //         return Restaurant::all()->random();
