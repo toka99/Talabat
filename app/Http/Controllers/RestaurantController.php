@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Model\Restaurant;
 use Illuminate\Http\Request;
 use App\Http\Resources\Restaurant\RestaurantResource;
+use App\Http\Resources\Restaurant\RestaurantCollection;
 
 class RestaurantController extends Controller
 {
@@ -15,7 +16,7 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        return Restaurant::all();
+        return RestaurantCollection::collection(Restaurant::all());
     }
 
     /**
@@ -26,7 +27,7 @@ class RestaurantController extends Controller
     public function create()
     {
         //
-    }
+     }
 
     /**
      * Store a newly created resource in storage.
@@ -48,7 +49,7 @@ class RestaurantController extends Controller
     public function show(Restaurant $restaurant)
     {
         return new RestaurantResource($restaurant);
-    }
+    } 
 
     /**
      * Show the form for editing the specified resource.
