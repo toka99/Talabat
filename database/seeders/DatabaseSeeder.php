@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Model\Restaurant::factory(60)->create();
+        \App\Models\Model\Restaurant::factory(100)->create();
         \App\Models\Model\Rating::factory(60)->create();
 
     }

@@ -22,10 +22,10 @@ class CreateRestaurantsTable extends Migration
             $table->integer('working_hours');
             $table->integer('minimum_order');
             $table->integer('delivery_fees');
-            $table->integer('vendor_id');
+            $table->integer('vendor_id')->unique();
             $table->string('first_name_vendor');
             $table->string('last_name_vendor');
-            $table->integer('password_vendor');
+            $table->string('password_vendor');
 
             $table->timestamps();
         });

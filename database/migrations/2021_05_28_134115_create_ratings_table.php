@@ -24,5 +24,4 @@ class CreateRatingsTable extends Migration
         });
     }
 
-   
 }

@@ -28,11 +28,11 @@ class RestaurantFactory extends Factory
             'location' => $this->faker->text,
             'working_hours' => $this->faker->numberBetween(0,24),
             'minimum_order' => $this->faker->numberBetween(20,100),
-            'delivery_fees' => $this->faker->numberBetween(15,17),
-            'vendor_id' => $this->faker->randomDigit,
+            'delivery_fees' => $this->faker->numberBetween(15,50),
+            'vendor_id' => $this->faker->unique()->numberBetween(0,1000),
             'first_name_vendor' => $this->faker->word, 
             'last_name_vendor' => $this->faker->word, 
-            'password_vendor' => $this->faker->randomDigit,
+            'password_vendor' => $this->faker->asciify('***************'),
 
 
         ];
