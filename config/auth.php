@@ -46,6 +46,8 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+
+        
     ],
 
     /*
@@ -115,3 +117,4 @@ return [
     'password_timeout' => 10800,
 
 ];
+

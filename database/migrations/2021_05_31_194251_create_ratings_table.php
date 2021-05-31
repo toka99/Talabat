@@ -17,6 +17,8 @@ class CreateRatingsTable extends Migration
             $table->increments('id');
             $table->integer('restaurant_id')->unsigned()->index();
             $table->foreign('restaurant_id')->references('id')->on('restaurants')->onDelete('cascade');
+            $table->integer('user_id')->unsigned()->index();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('order_packaging_score');
             $table->integer('delivery_time_score');
             $table->integer('value_for_money_score');

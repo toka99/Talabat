@@ -1,9 +1,10 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Model;
 
-use App\Models\User;
+use App\Models\Model\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
 class UserFactory extends Factory
@@ -23,11 +24,18 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name(),
+
+            'id' => $this->faker->unique()->numberBetween(0,1000),
+            'first_name' => $this->faker->name, 
+            'last_name' => $this->faker->name, 
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => $this->faker->asciify('***************'),
+            'gender' => $this->faker->randomElement(['Male' ,'Female']),
+            'date_of_birth' => $this->faker->dateTimeBetween('1930-01-01', '2021-12-31'),
+            'account_status' => $this->faker->randomElement(['Active' ,'Banned']),
             'remember_token' => Str::random(10),
+
         ];
     }
 
@@ -45,3 +53,4 @@ class UserFactory extends Factory
         });
     }
 }
+
