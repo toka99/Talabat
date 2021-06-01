@@ -34,7 +34,7 @@ return [
     | Supported: "session", "token"
     |
     */
-
+// fe etnean api mawgooden hal lazm n3'yar el esm wala la 
     'guards' => [
         'web' => [
             'driver' => 'session',
@@ -42,8 +42,14 @@ return [
         ],
 
         'api' => [
-            'driver' => 'token',
+            'driver' => 'jwt',
             'provider' => 'users',
+            'hash' => false,
+        ],
+
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'vendors',
             'hash' => false,
         ],
 
