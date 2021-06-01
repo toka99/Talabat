@@ -2,7 +2,7 @@
 
 namespace App\Models\Model;
 use App\Models\Model\Restaurant;
-use App\Models\Model\User;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

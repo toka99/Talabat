@@ -3,7 +3,7 @@
 namespace App\Models\Model;
 
 use App\Models\Model\Rating;
-use App\Models\Model\Vendor;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,8 +15,8 @@ class Restaurant extends Model
         return $this->hasMany(Rating::class);
     }
 
-    public function vendor()
+    public function user()
     {
-        return $this->belongsTo(Vendor::class);
+        return $this->belongsTo(User::class);
     }
 }

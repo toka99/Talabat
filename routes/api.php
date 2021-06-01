@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,8 +25,35 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('/restaurants','App\Http\Controllers\RestaurantController');
-Route::group(['middleware'=>['api','checkPassword'],'prefix'=>'restaurants'],function(){
+
+Route::group(['middleware'=>['auth:sanctum'],'prefix'=>'restaurants'],function(){
     Route::apiResource('/{restaurant}/ratings','App\Http\Controllers\RatingController');
+});
+
+// Route::post('/tokens/create', function (Request $request) {
+//     $token = $request->user()->createToken($request->token_name);
+
+//     return ['token' => $token->plainTextToken];
+// });
+
+
+Route::post('/sanctum/token', function (Request $request) {
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+        'first_name' => 'required',
+
+    ]);
+
+    $user = User::where('email', $request->email)->first();
+
+    if (! $user || ! Hash::check($request->password, $user->password)) {
+        throw ValidationException::withMessages([
+            'email' => ['The provided credentials are incorrect.'],
+        ]);
+    }
+
+    return $user->createToken($request->first_name)->plainTextToken;
 });
 
 

@@ -37,6 +37,10 @@ class RatingController extends Controller
      */
     public function store(Request $request)
     {
+        // if(valid(token)){
+        //     $request->user = user
+        // }
+        // $request->user()
         //
     }
 

@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->enum('gender', ['Male', 'Female']);
             $table->date('date_of_birth');
-            $table->enum('account_status', ['Active', 'Banned']);
+            $table->enum('account_status', ['Active', 'Banned'])->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

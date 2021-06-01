@@ -3,7 +3,7 @@
 namespace Database\Factories\Model;
 
 use App\Models\Model\Restaurant;
-use App\Models\Model\Vendor;
+use App\Models\Model\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Generator as Faker;
 class RestaurantFactory extends Factory
@@ -22,9 +22,9 @@ class RestaurantFactory extends Factory
      */
     public function definition()
     {
-        $vendors = Vendor::all()->pluck('id')->toArray();
+        $users = User::all()->pluck('id')->toArray();
         return [
-            'vendor_id' => $this->faker->randomElement($vendors), 
+            'vendor_id' => $this->faker->randomElement($users), 
             'name' => $this->faker->word,
             'description' => $this->faker->paragraph,
             'logo' => $this->faker->word,
