@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Hash;
 class LoginController extends Controller
 {
     public function loginCustomer(Request $request)
-    {
+    {   
+        
         $data = $request ->validate([
             'email' => 'required|email|max:60',
             'password' => 'required|min:6',
@@ -19,7 +20,9 @@ class LoginController extends Controller
 
         $user = User::where('email' , $data['email'])->first();
 
-        if(!$user || !Hash::check($data['password'], $user->password))
+        if(!$user || !Hash::check($data['password'], $user->password) || !$user->hasRole('customer') )
+
+       
         {
             return response(['message' => 'Invalid credentials'],401);
 
@@ -33,6 +36,8 @@ class LoginController extends Controller
        
            ];
 
+
+           
            return response($response , 200);
     
 
@@ -54,7 +59,7 @@ class LoginController extends Controller
     
             $user = User::where('email' , $data['email'])->first();
     
-            if(!$user || !Hash::check($data['password'], $user->password))
+            if(!$user || !Hash::check($data['password'], $user->password)  || !$user->hasRole('vendor'))
             {
                 return response(['message' => 'Invalid credentials'],401);
     
