@@ -29,6 +29,33 @@ class User extends Authenticatable
         return $this->hasMany(Restaurant::class);
     }
 
+
+
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'password',
+        'email',
+        'gender',
+        'date_of_birth',
+        'mobile_number',
+        'created_at',
+    
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+
+
+
      
     
 }
