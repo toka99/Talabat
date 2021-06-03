@@ -3,7 +3,7 @@
 namespace Database\Factories\Model;
 
 use App\Models\Model\Restaurant;
-use App\Models\Model\User;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Generator as Faker;
 class RestaurantFactory extends Factory

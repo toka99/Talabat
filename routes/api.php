@@ -21,6 +21,9 @@ use Illuminate\Validation\ValidationException;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    // if (auth()->user()){
+    //     auth()->user()->assignRole('vendor');
+    // }
     return $request->user();
 });
 
@@ -30,6 +33,7 @@ Route::group(['middleware'=>['auth:sanctum'],'prefix'=>'restaurants'],function()
 
 Route::group(['middleware'=>['auth:sanctum']],function(){
     Route::apiResource('/restaurants','App\Http\Controllers\RestaurantController');
+
 });
 
 Route::post('/sanctum/token', function (Request $request) {

@@ -2,7 +2,7 @@
 
 namespace Database\Factories\Model;
 
-use App\Models\Model\User;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
@@ -33,6 +33,7 @@ class UserFactory extends Factory
             'password' => $this->faker->asciify('***************'),
             'gender' => $this->faker->randomElement(['Male' ,'Female']),
             'date_of_birth' => $this->faker->dateTimeBetween('1930-01-01', '2021-12-31'),
+            'mobile_number' => $this->faker->regexify('(201)[0-9]{9}'),
             'account_status' => $this->faker->randomElement(['Active' ,'Banned']),
             'remember_token' => Str::random(10),
 
@@ -53,4 +54,3 @@ class UserFactory extends Factory
         });
     }
 }
-

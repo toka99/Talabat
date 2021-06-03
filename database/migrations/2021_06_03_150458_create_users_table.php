@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->enum('gender', ['Male', 'Female']);
             $table->date('date_of_birth');
+            $table->bigInteger('mobile_number');
             $table->enum('account_status', ['Active', 'Banned'])->nullable();
             $table->rememberToken();
             $table->timestamps();
@@ -30,3 +31,4 @@ class CreateUsersTable extends Migration
 
 
 }
+

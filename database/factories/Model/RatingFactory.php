@@ -3,7 +3,7 @@
 namespace Database\Factories\Model;
 
 use App\Models\Model\Rating;
-use App\Models\Model\User;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Generator as Faker;
 use App\Models\Model\Restaurant;
