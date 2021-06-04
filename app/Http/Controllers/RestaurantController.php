@@ -5,10 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\Model\Restaurant;
 use Illuminate\Http\Request;
 use App\Http\Resources\Restaurant\RestaurantResource;
+use App\Http\Requests\RestaurantUpadateRequest;
+use App\Http\Requests\RestaurantRequest;
 use App\Http\Resources\Restaurant\RestaurantCollection;
+use Symfony\Component\HttpFoundation\Response;
 
 class RestaurantController extends Controller
 {
+
+
+
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:sanctum')->except('index','show');
+    // }
+    
     /**
      * Display a listing of the resource.
      *
@@ -36,9 +47,21 @@ class RestaurantController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RestaurantRequest $request)
     {
-        //
+             $restaurant = new Restaurant;
+             $restaurant->vendor_id = auth()->user()->id;
+             $restaurant->name = $request->name;
+             $restaurant->description = $request->description;
+             $restaurant->logo = $request->logo;
+             $restaurant->location = $request->location;
+             $restaurant->working_hours = $request->working_hours;
+             $restaurant->minimum_order = $request->minimum_order;
+             $restaurant->delivery_fees = $request->delivery_fees;
+             $restaurant->save();
+             return response([
+                 'data'=> new RestaurantResource($restaurant)
+             ],Response::HTTP_CREATED);
     }
 
     /**
@@ -70,10 +93,17 @@ class RestaurantController extends Controller
      * @param  \App\Models\Model\Restaurant  $restaurant
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Restaurant $restaurant)
+    public function update(RestaurantUpadateRequest $request, Restaurant $restaurant)
     {
-        //
+        // return $request->all();
+        $restaurant->update($request->all());
+        return response([
+            'data'=> new RestaurantResource($restaurant)
+        ],Response::HTTP_CREATED);
+
     }
+
+
 
     /**
      * Remove the specified resource from storage.

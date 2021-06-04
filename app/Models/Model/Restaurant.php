@@ -19,4 +19,22 @@ class Restaurant extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+
+
+    
+    protected $fillable = [
+        'vendor_id',
+        'name',
+        'description',
+        'logo',
+        'location',
+        'working_hours',
+        'minimum_order',
+        'delivery_fees',
+        'created_at',
+    
+    ];
+
+  
 }
