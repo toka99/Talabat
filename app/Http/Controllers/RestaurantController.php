@@ -9,12 +9,12 @@ use App\Http\Requests\RestaurantUpadateRequest;
 use App\Http\Requests\RestaurantRequest;
 use App\Http\Resources\Restaurant\RestaurantCollection;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
+use Exception;
 // use App\Exceptions\Handler;
 
 class RestaurantController extends Controller
 {
-
-
 
     // public function __construct()
     // {
@@ -98,6 +98,7 @@ class RestaurantController extends Controller
      */
     public function update(RestaurantUpadateRequest $request, Restaurant $restaurant)
     {
+        $this->RestaurantVendorCheck($restaurant);
         // return $request->all();
         $restaurant->update($request->all());
         return response([
@@ -116,7 +117,18 @@ class RestaurantController extends Controller
      */
     public function destroy(Restaurant $restaurant)
     {
+        $this->RestaurantVendorCheck($restaurant);
         $restaurant->delete();
         return response(null,Response::HTTP_NO_CONTENT);
     }
+    
+
+    public function RestaurantVendorCheck($restaurant) {
+ 
+        if (Auth::id() !== $restaurant->vendor_id) {
+            
+            throw new Exception("Not Restaurant Owner!",1);
+        }
+    }
 }
+ 
