@@ -29,6 +29,8 @@ class Restaurant extends Model
         'description',
         'logo',
         'location',
+        'location_latitude',
+        'location_longitude',
         'working_hours',
         'minimum_order',
         'delivery_fees',

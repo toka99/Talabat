@@ -55,6 +55,8 @@ class RestaurantController extends Controller
              $restaurant->description = $request->description;
              $restaurant->logo = $request->logo;
              $restaurant->location = $request->location;
+             $restaurant->location_latitude = $request->location_latitude;
+             $restaurant->location_longitude = $request->location_longitude;
              $restaurant->working_hours = $request->working_hours;
              $restaurant->minimum_order = $request->minimum_order;
              $restaurant->delivery_fees = $request->delivery_fees;
@@ -113,6 +115,7 @@ class RestaurantController extends Controller
      */
     public function destroy(Restaurant $restaurant)
     {
-        //
+        $restaurant->delete();
+        return response(null,Response::HTTP_NO_CONTENT);
     }
 }

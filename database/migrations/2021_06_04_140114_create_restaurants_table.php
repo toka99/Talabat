@@ -20,7 +20,9 @@ class CreateRestaurantsTable extends Migration
             $table->string('name');
             $table->text('description');
             $table->string('logo');
-            $table->string('location');
+            $table->string('location')->nullable();
+            $table->double('location_latitude')->nullable();
+            $table->double('location_longitude')->nullable();
             $table->integer('working_hours');
             $table->integer('minimum_order');
             $table->integer('delivery_fees');
