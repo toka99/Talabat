@@ -18,4 +18,21 @@ class Rating extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+
+     
+    protected $fillable = [
+        
+        'restaurant_id',
+        'user_id',
+        'order_packaging_score',
+        'delivery_time_score',
+        'value_for_money_score',
+        'quality_of_food_score',
+        'driver_performance_score',
+        'overall_score',
+        'review',
+        'created_at',
+    
+    ];
 }

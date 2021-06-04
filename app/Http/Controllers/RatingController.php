@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Model\Rating;
 use App\Http\Resources\RatingResource;
+use App\Http\Requests\RatingRequest;
 use App\Models\Model\Restaurant;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class RatingController extends Controller
 {
@@ -35,13 +37,14 @@ class RatingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        // if(valid(token)){
-        //     $request->user = user
-        // }
-        // $request->user()
-        //
+    public function store(RatingRequest $request,Restaurant $restaurant)
+    {    
+        $rating = new Rating($request->all());
+        $rating->user_id = auth()->user()->id;
+        $restaurant->ratings()->save($rating);
+        return response([
+            'data'=> new RatingResource($rating)
+        ],Response::HTTP_CREATED);
     }
 
     /**

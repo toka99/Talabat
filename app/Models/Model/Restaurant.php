@@ -24,6 +24,7 @@ class Restaurant extends Model
 
     
     protected $fillable = [
+        
         'vendor_id',
         'name',
         'description',
