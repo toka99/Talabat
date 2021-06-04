@@ -8,6 +8,8 @@ use App\Http\Requests\RatingRequest;
 use App\Models\Model\Restaurant;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
+use Exception;
 
 class RatingController extends Controller
 {
@@ -74,11 +76,15 @@ class RatingController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Model\Rating  $rating
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response1
      */
-    public function update(Request $request, Rating $rating)
+    public function update(RatingRequest $request, Restaurant $restaurant,Rating $rating)
     {
-        //
+        $this->RatingUserCheck($rating);
+        $rating->update($request->all());
+        return response([
+            'data'=> new RatingResource($rating)
+        ],Response::HTTP_CREATED);
     }
 
     /**
@@ -87,8 +93,20 @@ class RatingController extends Controller
      * @param  \App\Models\Model\Rating  $rating
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Rating $rating)
+    public function destroy(Restaurant $restaurant,Rating $rating)
     {
-        //
+        $this->RatingUserCheck($rating);
+        $rating->delete();
+        return response(null,Response::HTTP_NO_CONTENT);
+    }
+
+
+    
+    public function RatingUserCheck($rating) {
+ 
+        if (Auth::id() !== $rating->user_id) {
+            
+            throw new Exception("You are not Rating Owner!",1);
+        }
     }
 }
