@@ -9,6 +9,7 @@ use App\Http\Requests\RestaurantUpadateRequest;
 use App\Http\Requests\RestaurantRequest;
 use App\Http\Resources\Restaurant\RestaurantCollection;
 use Symfony\Component\HttpFoundation\Response;
+// use App\Exceptions\Handler;
 
 class RestaurantController extends Controller
 {
