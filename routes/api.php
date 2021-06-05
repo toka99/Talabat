@@ -7,8 +7,11 @@ use App\Http\Middleware\CheckPassword;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\RatingController;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth;
 
 
 
@@ -22,10 +25,13 @@ use Illuminate\Validation\ValidationException;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+//register
 Route::post('registercustomer',[RegisterController::class,'registerCustomer']);
 Route::post('registervendor',[RegisterController::class,'registerVendor']);
 Route::post('logincustomer',[LoginController::class,'loginCustomer']);
 Route::post('loginvendor',[LoginController::class,'loginVendor']);
+Route::post('logout' , [LogoutController::class , 'logout'])->middleware('auth:sanctum');
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -33,19 +39,26 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::group(['middleware'=>['auth:sanctum'],'prefix'=>'restaurants'],function(){
-    Route::apiResource('/{restaurant}/ratings','App\Http\Controllers\RatingController');
+//ratings
+Route::get('/restaurants/{restaurant}/ratings', [RatingController::class, 'index'])->name('ratings.index');
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('/restaurants/{restaurant}/ratings', [RatingController::class, 'store']);
+    Route::put('/restaurants/{restaurant}/ratings/{rating}', [RatingController::class, 'update']);
+    Route::delete('/restaurants/{restaurant}/ratings/{rating}', [RatingController::class, 'destroy']);
 });
 
 
-Route::group(['middleware'=>['auth:sanctum']],function(){
-    Route::apiResource('/restaurants','App\Http\Controllers\RestaurantController');
-    Route::post('logout' , [LogoutController::class , 'logout']);
-    // Route::post('logoutcustomer' , [LogoutController::class , 'logoutCustomer']);
-    // Route::post('logoutvendor' , [LogoutController::class , 'logoutVenedor']);
-
+//restaurants
+Route::get("/restaurants", [RestaurantController::class, 'index']);
+Route::get('/restaurants/{restaurant}', [RestaurantController::class, 'show'])->name('restaurants.show');
+Route::group(['middleware' => ['auth:sanctum','role:vendor']], function () {
+    Route::post("/restaurants", [RestaurantController::class, 'store']);
+    Route::put('restaurants/{restaurant}', [RestaurantController::class, 'update']);
+    Route::delete('restaurants/{restaurant}', [RestaurantController::class, 'destroy']);
 });
 
+
+//sanctum
 Route::post('/sanctum/token', function (Request $request) {
     $request->validate([
         'email' => 'required|email',
@@ -63,6 +76,18 @@ Route::post('/sanctum/token', function (Request $request) {
     return $user->createToken($request->id)->plainTextToken;
 });
 
+
+
+
+
+
+// Route::group(['middleware'=>['auth:sanctum']],function(){
+//     Route::apiResource('/restaurants','App\Http\Controllers\RestaurantController');
+//     Route::post('logout' , [LogoutController::class , 'logout']);
+//     // Route::post('logoutcustomer' , [LogoutController::class , 'logoutCustomer']);
+//     // Route::post('logoutvendor' , [LogoutController::class , 'logoutVenedor']);
+
+// });
 
 // Route::group(['middleware'=>['api','checkPassword'],'prefix'=>'restaurants'],function(){
 //     Route::post('/{restaurant}/ratings','App\Http\Controllers\RatingController@index');
