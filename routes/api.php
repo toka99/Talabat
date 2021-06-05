@@ -9,6 +9,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\MenuCategoryController;
+use App\Http\Controllers\MenuItemController;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
@@ -55,6 +57,24 @@ Route::group(['middleware' => ['auth:sanctum','role:vendor']], function () {
     Route::post("/restaurants", [RestaurantController::class, 'store']);
     Route::put('restaurants/{restaurant}', [RestaurantController::class, 'update']);
     Route::delete('restaurants/{restaurant}', [RestaurantController::class, 'destroy']);
+});
+
+
+//menu_categories
+Route::get('/restaurants/{restaurant}/menucategories', [MenuCategoryController::class, 'index'])->name('menucategories.index');
+Route::get('/restaurants/{restaurant}/menucategories/{menucategory}', [MenuCategoryController::class, 'show'])->name('menucategories.show');
+Route::group(['middleware' => ['auth:sanctum','role:vendor']], function () {
+    Route::post('/restaurants/{restaurant}/menucategories', [MenuCategoryController::class, 'store']);
+    Route::put('/restaurants/{restaurant}/menucategories/{menucategory}', [MenuCategoryController::class, 'update']);
+    Route::delete('/restaurants/{restaurant}/menucategories/{menucategory}', [MenuCategoryController::class, 'destroy']);
+});
+
+//menu_items
+Route::get('/restaurants/{restaurant}/menucategories/{menucategory}/menuitems', [MenuItemController::class, 'index'])->name('menuitems.index');
+Route::group(['middleware' => ['auth:sanctum','role:vendor']], function () {
+    Route::post('/restaurants/{restaurant}/menucategories/{menucategory}/menuitems', [MenuItemController::class, 'store']);
+    Route::put('/restaurants/{restaurant}/menucategories/{menucategory}/menuitems/{menuitem}', [MenuItemController::class, 'update']);
+    Route::delete('/restaurants/{restaurant}/menucategories/{menucategory}/menuitems/{menuitem}', [MenuItemController::class, 'destroy']);
 });
 
 

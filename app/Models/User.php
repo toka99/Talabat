@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Models\Model\Rating;
+use App\Models\Model\MenuCategory;
+use App\Models\Model\MenuItem;
 use App\Models\Model\Restaurant;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,6 +29,16 @@ class User extends Authenticatable
     public function restaurants()
     {
         return $this->hasMany(Restaurant::class);
+    }
+
+    public function menucategories()
+    {
+        return $this->hasMany(MenuCategory::class);
+    }
+
+    public function menuitems()
+    {
+        return $this->hasMany(MenuItem::class);
     }
 
 
