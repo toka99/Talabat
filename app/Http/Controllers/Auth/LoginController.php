@@ -65,7 +65,7 @@ class LoginController extends Controller
 
         $user = User::where('email' , $data['email'])->first();
 
-        if(!$user || !Hash::check($data['password'], $user->password) || !$user->hasRole('customer') )
+        if(!$user || !Hash::check($data['password'], $user->password) || !$user->hasRole('customer') || $user->account_status=='Banned' )
         {
             return response(['message' => 'Invalid credentials'],401);
 
@@ -102,7 +102,7 @@ class LoginController extends Controller
     
             $user = User::where('email' , $data['email'])->first();
     
-            if(!$user || !Hash::check($data['password'], $user->password)  || !$user->hasRole('vendor'))
+            if(!$user || !Hash::check($data['password'], $user->password)  || !$user->hasRole('vendor') || $user->account_status=='Banned')
             {
                 return response(['message' => 'Invalid credentials'],401);
     

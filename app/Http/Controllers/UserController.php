@@ -2,84 +2,195 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\UpdateUserRequest;
+use App\Repositories\UserRepository;
+use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
+use App\Models\User;
+use Flash;
+use Response;
+use Hash;
 
-class UserController extends Controller
+class UserController extends AppBaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    /** @var $userRepository UserRepository */
+    private $userRepository;
+
+    public function __construct(UserRepository $userRepo)
     {
-        //
+        $this->userRepository = $userRepo;
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the User.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function index(Request $request)
+    {
+        $users = $this->userRepository->all();
+
+        return view('users.index')->with('users', $users);
+    }
+
+    /**
+     * Show the form for creating a new User.
+     *
+     * @return Response
      */
     public function create()
     {
-        //
+        return view('users.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created User in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CreateUserRequest $request
+     *
+     * @return Response
      */
-    public function store(Request $request)
+    public function store(CreateUserRequest $request)
     {
-        //
+        $input = $request->all();
+        $input['password'] = Hash::make($input['password']);
+        $user = $this->userRepository->create($input);
+
+        Flash::success('User saved successfully.');
+
+        return redirect(route('users.index'));
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified User.
      *
-     * @param  \App\Models\Model\User  $user
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     *
+     * @return Response
      */
-    public function show(User $user)
+    public function show($id)
     {
-        //
+        $user = $this->userRepository->find($id);
+
+        if (empty($user)) {
+            Flash::error('User not found');
+
+            return redirect(route('users.index'));
+        }
+
+        return view('users.show')->with('user', $user);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified User.
      *
-     * @param  \App\Models\Model\User  $user
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     *
+     * @return Response
      */
-    public function edit(User $user)
+    public function edit($id)
     {
-        //
+        $user = $this->userRepository->find($id);
+
+        if (empty($user)) {
+            Flash::error('User not found');
+
+            return redirect(route('users.index'));
+        }
+
+        return view('users.edit')->with('user', $user);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified User in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Model\User  $user
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @param UpdateUserRequest $request
+     *
+     * @return Response
      */
-    public function update(Request $request, User $user)
+    public function update($id, UpdateUserRequest $request)
     {
-        //
+        $user = $this->userRepository->find($id);
+
+        if (empty($user)) {
+            Flash::error('User not found');
+
+            return redirect(route('users.index'));
+        }
+        $input =  $request->all();
+        if (!empty($input['password'])) {
+            $input['password'] = Hash::make($input['password']);
+        } else {
+            unset($input['password']);
+        }
+        $user = $this->userRepository->update($input, $id);
+
+        Flash::success('User updated successfully.');
+
+        return redirect(route('users.index'));
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified User from storage.
      *
-     * @param  \App\Models\Model\User  $user
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     *
+     * @throws \Exception
+     *
+     * @return Response
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        //
+        $user = $this->userRepository->find($id);
+
+        if (empty($user)) {
+            Flash::error('User not found');
+
+            return redirect(route('users.index'));
+        }
+
+        $this->userRepository->delete($id);
+
+        Flash::success('User deleted successfully.');
+
+        return redirect(route('users.index'));
     }
+
+
+
+    
+    public function unban($user){
+        $user = User::find($user);
+        $user->account_status = 'Active'; //Approved
+        $user->save();
+        return redirect()->route('users.index');
+         }
+         
+    public function ban($user){
+        $user = User::find($user);
+        $user->account_status= 'Banned'; //Declined
+        $user->save();
+        return redirect()->route('users.index');
+         }
+
+
+
+        //  public function ban(User $receptionistID)
+        //  {
+        //      $receptionistID->ban();
+        //      return response()->json(['message' => 'User banned!']); 
+        //      return view('admin-views.receptionists');
+        //  }
+     
+        //  public function unBan(User $receptionistID)
+        //  {
+        //      $receptionistID->unBan();
+        //      return response()->json(['message' => 'User Un-banned!']); 
+        //      return view('admin-views.receptionists');
+        //  }
+
 }
