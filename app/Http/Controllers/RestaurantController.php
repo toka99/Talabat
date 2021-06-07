@@ -61,6 +61,7 @@ class RestaurantController extends Controller
              $restaurant->working_hours = $request->working_hours;
              $restaurant->minimum_order = $request->minimum_order;
              $restaurant->delivery_fees = $request->delivery_fees;
+             $restaurant->cusine_id = $request->cusine_id;
              $restaurant->save();
              return response([
                  'data'=> new RestaurantResource($restaurant)

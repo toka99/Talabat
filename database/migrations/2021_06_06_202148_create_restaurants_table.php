@@ -17,6 +17,8 @@ class CreateRestaurantsTable extends Migration
             $table->increments('id');
             $table->integer('vendor_id')->unsigned()->index();
             $table->foreign('vendor_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('cusine_id')->unsigned()->index();
+            $table->foreign('cusine_id')->references('id')->on('cusines')->onDelete('cascade');
             $table->string('name');
             $table->text('description');
             $table->string('logo');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Restaurant;
 
+
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class RestaurantResource extends JsonResource
@@ -25,12 +26,16 @@ class RestaurantResource extends JsonResource
             'minimum_order' => $this->minimum_order,
             'vendor_id' => $this->vendor_id,
             'delivery_fees' => $this->delivery_fees,
+            'cusine_id' => $this->cusine_id,
             'ratings' => $this->ratings->count() > 0 ? round($this->ratings->sum('overall_score')/
                $this->ratings->count(),0) : 'There are currently no reviews available for this restaurant',
 
             'href' => [
-                'ratings' => route('ratings.index',$this->id)
+            //     'ratings' => route('ratings.index',$this->id)
+                   'ratings' => url("api/restaurants/{$this->id}/ratings")
+
             ]
+                   
             
         ];
     }

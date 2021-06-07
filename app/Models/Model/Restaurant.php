@@ -5,6 +5,7 @@ namespace App\Models\Model;
 use App\Models\Model\Rating;
 use App\Models\Model\MenuCategory;
 use App\Models\User;
+use App\Models\Cusine;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,11 +28,17 @@ class Restaurant extends Model
     }
 
 
+    public function cusine()
+    {
+        return $this->belongsTo(Cusine::class);
+    }
+
 
     
     protected $fillable = [
         
         'vendor_id',
+        'cusine_id',
         'name',
         'description',
         'logo',

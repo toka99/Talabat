@@ -26,13 +26,16 @@ class RestaurantCollection extends JsonResource
             'minimum_order' => $this->minimum_order,
             'delivery_fees' => $this->delivery_fees,
             'vendor_id' => $this->vendor_id,
+            'cusine_id' => $this->cusine_id,
             'ratings' => $this->ratings->count() > 0 ? round($this->ratings->sum('overall_score')/
                $this->ratings->count(),0) : 'There are currently no reviews available for this restaurant',
 
-            'href' => [
-                'link' => route('restaurants.show',$this->id)
-            ]
 
+            'href' => [
+                //     'link' => route('restaurants.show',$this->id)
+                       'restaurants' => url("api/restaurants/{$this->id}")
+    
+                ]
         ];
     }
 }

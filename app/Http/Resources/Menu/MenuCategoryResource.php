@@ -19,9 +19,15 @@ class MenuCategoryResource extends JsonResource
             'vendor_id' => $this->vendor_id,
             'restaurant_id' => $this->restaurant_id,
             'name' => $this->name,
+        
+
+
             'href' => [
-                'menuitems' => route('menuitems.index',[$this->restaurant_id,$this->id])
+                // 'menuitems' => route('menuitems.index',[$this->restaurant_id,$this->id])
+                'menuitems' => url("api/restaurants/{$this->restaurant_id}/menucategories/{$this->id}/menuitems")
             ]
+
+           
             
         ];
     }
