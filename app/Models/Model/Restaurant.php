@@ -4,6 +4,9 @@ namespace App\Models\Model;
 
 use App\Models\Model\Rating;
 use App\Models\Model\MenuCategory;
+use App\Models\Model\MenuItem;
+use App\Models\Model\CartItem;
+use App\Models\Model\Cart;
 use App\Models\User;
 use App\Models\Cusine;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,11 +30,26 @@ class Restaurant extends Model
         return $this->hasMany(MenuCategory::class);
     }
 
+    public function menuitems()
+    {
+        return $this->hasMany(MenuItem::class);
+    }
 
     public function cusine()
     {
         return $this->belongsTo(Cusine::class);
     }
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
+
+    public function cartitems()
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
 
 
     

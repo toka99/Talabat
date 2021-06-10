@@ -47,6 +47,7 @@ class MenuItemController extends Controller
 
         $menuitem = new MenuItem($request->all());
         $menuitem->vendor_id = auth()->user()->id;
+        $menuitem->restaurant_id = $restaurant->id;
 
         if ($menuitem->vendor_id !== $restaurant->vendor_id) {
             
@@ -55,6 +56,7 @@ class MenuItemController extends Controller
 
         else{
         $menucategory->menuitems()->save($menuitem);
+        // $restaurant->menuitems()->save($menuitem);
         return response([
             'data'=> new MenuItemResource($menuitem)
         ],Response::HTTP_CREATED);

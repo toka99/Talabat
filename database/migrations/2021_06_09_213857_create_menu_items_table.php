@@ -19,6 +19,8 @@ class CreateMenuItemsTable extends Migration
             $table->foreign('vendor_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('menu_category_id')->unsigned()->index();
             $table->foreign('menu_category_id')->references('id')->on('menu_categories')->onDelete('cascade');
+            $table->integer('restaurant_id')->unsigned()->index();
+            $table->foreign('restaurant_id')->references('id')->on('restaurants')->onDelete('cascade');
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('logo');

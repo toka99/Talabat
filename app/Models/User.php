@@ -6,6 +6,7 @@ use App\Models\Model\Rating;
 use App\Models\Model\MenuCategory;
 use App\Models\Model\MenuItem;
 use App\Models\Model\Restaurant;
+use App\Models\Model\Cart;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -39,6 +40,11 @@ class User extends Authenticatable
     public function menuitems()
     {
         return $this->hasMany(MenuItem::class);
+    }
+
+    public function cart()
+    {
+        return $this->belongsTo(Cart::class);
     }
 
 

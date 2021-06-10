@@ -18,6 +18,7 @@ class MenuItemResource extends JsonResource
             'id' => $this->id,
             'vendor_id' => $this->vendor_id,
             'menu_category_id' => $this->menu_category_id,
+            'restaurant_id' => $this->restaurant_id,
             'name' => $this->name,
             'description' => $this->description,
             'logo' => $this->logo,
