@@ -12,6 +12,8 @@ use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\MenuCategoryController;
 use App\Http\Controllers\MenuItemController;
+use App\Http\Controllers\CartItemController;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
@@ -78,6 +80,21 @@ Route::group(['middleware' => ['auth:sanctum','role:vendor']], function () {
     Route::delete('/restaurants/{restaurant}/menucategories/{menucategory}/menuitems/{menuitem}', [MenuItemController::class, 'destroy']);
 });
 
+//cart
+Route::group(['middleware' => ['auth:sanctum','role:customer']], function () {
+    Route::get('/restaurants/{restaurant}/carts/{cart}', [CartController::class, 'index'])->name('carts.show');
+    // Route::post('/restaurants/{restaurant}/carts', [CartController::class, 'store']);
+    // Route::put('/restaurants/{restaurant}/carts/{cart}', [CartController::class, 'update']);
+    // Route::delete('/restaurants/{restaurant}/carts/{cart}', [CartController::class, 'destroy']);
+});
+
+//cart_items
+Route::group(['middleware' => ['auth:sanctum','role:customer']], function () {
+    Route::get('/restaurants/{restaurant}/menuitems/{menuitem}/cartitems', [CartItemController::class, 'index'])->name('cartitems.index');
+    Route::post('/restaurants/{restaurant}/menuitems/{menuitem}/cartitems', [CartItemController::class, 'addToCart']);
+    // Route::put('/restaurants/{restaurant}/menuitems/{menuitem}/cartitems/{cartitem}', [CartItemController::class, 'update']);
+    Route::delete('/restaurants/{restaurant}/menuitems/{menuitem}/cartitems/{cartitem}', [CartItemController::class, 'removeFromCart']);
+});
 
 //sanctum
 Route::post('/sanctum/token', function (Request $request) {
