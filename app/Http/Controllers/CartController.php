@@ -41,19 +41,7 @@ class CartController extends Controller
      */
     public function store( Restaurant $restaurant)
     {
-        $cart = new Cart();
-        $cart->total_price = $cart->cartitems->sum('price'); 
-        // Auth::user()->products->sum('price');
-        $cart->user_id = auth()->user()->id;
-        $cart->restaurant_id = $restaurant->id;
-        $cart->save();
-        return response([
-            'data'=> new CartResource($cart)
-         ],Response::HTTP_CREATED);
-        // $restaurant->menucategories()->save($menucategory);
-        // return response([
-        //     'data'=> new MenuCategoryResource($menucategory)
-        // ],Response::HTTP_CREATED);
+        //
     }
 
     /**
@@ -62,10 +50,10 @@ class CartController extends Controller
      * @param  \App\Models\Model\Cart  $cart
      * @return \Illuminate\Http\Response
      */
-    public function show(Cart $cart)
+    public function show(Restaurant $restaurant, Cart $cart)
     {
         $this->CartUserCheck($cart);
-        return CartResource::collection($cart);
+        return new CartResource($cart);
     }
 
     /**

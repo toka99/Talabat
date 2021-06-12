@@ -21,6 +21,10 @@ class CartResource extends JsonResource
             'sub_total' => $this->sub_total,
             'delivery_fees' => Restaurant::find($this->restaurant_id)->delivery_fees ,
             'total_price' => $this->total_price,
+            'href' => [
+                       'cart-items' => url("api/restaurants/{$this->restaurant_id}/carts/{$this->id}/cartitems")
+    
+                ]
         ];
     }
 }

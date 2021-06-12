@@ -23,7 +23,7 @@ class CartItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Restaurant $restaurant, MenuItem $menuitem, Cart $cart)
+    public function index(Restaurant $restaurant, Cart $cart)
     {
         return CartItemResource::collection($cart->cartitems);
     }
@@ -63,47 +63,47 @@ class CartItemController extends Controller
          $cartitem = new CartItem($request->all());
          $cartitem->menu_item_id = $menuitem->id;
          $cartitem->restaurant_id = $restaurant->id;
-         if($cart->restaurant_id == $cartitem->restaurant_id)
+         if($cart->restaurant_id == $cartitem->restaurant_id && $cart->restaurant_id == $menuitem->restaurant_id )
          {
-         $cartitemcheck=CartItem::where('menu_item_id', '=', $cartitem->menu_item_id)->first();
+           $cartitemcheck=CartItem::where('menu_item_id', '=', $cartitem->menu_item_id)->first();
 
-         if( CartItem::where('menu_item_id', '=', $cartitem->menu_item_id)->exists())
-         {
-            $cartitemcheck->quantity += 1;
-            $cartitemcheck->price=$cartitemcheck->quantity * $menuitem->price;
-            $cartitemcheck->save();
+           if( CartItem::where('menu_item_id', '=', $cartitem->menu_item_id)->exists())
+           {
+             $cartitemcheck->quantity += 1;
+             $cartitemcheck->price=$cartitemcheck->quantity * $menuitem->price;
+             $cartitemcheck->save();
 
-            $cart->sub_total = $cart->cartitems->sum('price'); 
-            $cart->total_price=$cart->sub_total + $restaurant->delivery_fees;
-            $cart->save();
+             $cart->sub_total = $cart->cartitems->sum('price'); 
+             $cart->total_price=$cart->sub_total + $restaurant->delivery_fees;
+             $cart->save();
 
-            return response([
-                'cart-item'=> new CartItemResource($cartitemcheck)  ,
-                'cart'     =>   new CartResource($cart)
-             ],Response::HTTP_CREATED);
-         }
+             return response([
+                 'cart-item'=> new CartItemResource($cartitemcheck)  ,
+                 'cart'     =>   new CartResource($cart)
+              ],Response::HTTP_CREATED);
+           }
         
-         else 
-         {
+           else 
+           {
          
-         $cartitem->cart_id = $cart->id;
-         $cartitem->quantity=1;
-         $cartitem->price=$cartitem->quantity * $menuitem->price;
-         $cartitem->save();
+             $cartitem->cart_id = $cart->id;
+             $cartitem->quantity=1;
+             $cartitem->price=$cartitem->quantity * $menuitem->price;
+             $cartitem->save();
 
-         $cart->sub_total = $cart->cartitems->sum('price'); 
-         $cart->total_price=$cart->sub_total + $restaurant->delivery_fees;
-         $cart->save();
+             $cart->sub_total = $cart->cartitems->sum('price'); 
+             $cart->total_price=$cart->sub_total + $restaurant->delivery_fees;
+             $cart->save();
 
-         return response([
-             'cart-item'=> new CartItemResource($cartitem)  ,
-             'cart'     =>   new CartResource($cart)
-          ],Response::HTTP_CREATED);
-         }
-        }
-         else{
-            return response(['message' => 'You Can not Select from 2 different restaurants at same time empty your cart first'],401);
-         }
+             return response([
+                 'cart-item'=> new CartItemResource($cartitem)  ,
+                 'cart'     =>   new CartResource($cart)
+              ],Response::HTTP_CREATED);
+            }
+           }
+        else{
+          return response(['message' => 'You Can not Select from 2 different restaurants at same time empty your cart first'],401);
+           }
         
         }
     
