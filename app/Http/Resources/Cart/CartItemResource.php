@@ -17,7 +17,6 @@ class CartItemResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            
             'menu_item_name' => MenuItem::find($this->menu_item_id)->name,
             'restaurant_id' => $this->restaurant_id,
             'cart_id' => $this->cart_id, 

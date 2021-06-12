@@ -50,7 +50,7 @@ class CartItemController extends Controller
         $user = auth()->user()->id;
         $cart = Cart::where('user_id', '=', $user)->first();
 
-         if (! Cart::where('user_id', '=', $user)->exists()) 
+        if (! Cart::where('user_id', '=', $user)->exists()) 
          {
          $cart = new Cart();
          $cart->sub_total = 0; 
@@ -60,15 +60,19 @@ class CartItemController extends Controller
          $cart->save();
           }
         
+    
          $cartitem = new CartItem($request->all());
          $cartitem->menu_item_id = $menuitem->id;
          $cartitem->restaurant_id = $restaurant->id;
-         if($cart->restaurant_id == $cartitem->restaurant_id && $cart->restaurant_id == $menuitem->restaurant_id )
+         if($cart->restaurant_id == $cartitem->restaurant_id && $cart->restaurant_id == $menuitem->restaurant_id)
          {
-           $cartitemcheck=CartItem::where('menu_item_id', '=', $cartitem->menu_item_id)->first();
+           $cartitemcheck=CartItem::where([ ['menu_item_id', '=', $cartitem->menu_item_id], ['cart_id','=' , $cart->id] ])->first();
+           
+           
+           if( CartItem::where([ ['menu_item_id', '=', $cartitem->menu_item_id], ['cart_id','=' , $cart->id] ])->exists() )
+           { 
+        
 
-           if( CartItem::where('menu_item_id', '=', $cartitem->menu_item_id)->exists())
-           {
              $cartitemcheck->quantity += 1;
              $cartitemcheck->price=$cartitemcheck->quantity * $menuitem->price;
              $cartitemcheck->save();
@@ -76,15 +80,17 @@ class CartItemController extends Controller
              $cart->sub_total = $cart->cartitems->sum('price'); 
              $cart->total_price=$cart->sub_total + $restaurant->delivery_fees;
              $cart->save();
-
+             
              return response([
                  'cart-item'=> new CartItemResource($cartitemcheck)  ,
                  'cart'     =>   new CartResource($cart)
               ],Response::HTTP_CREATED);
-           }
+            
+        }
         
            else 
-           {
+           { 
+                
          
              $cartitem->cart_id = $cart->id;
              $cartitem->quantity=1;
@@ -100,12 +106,14 @@ class CartItemController extends Controller
                  'cart'     =>   new CartResource($cart)
               ],Response::HTTP_CREATED);
             }
-           }
+        }
+
         else{
           return response(['message' => 'You Can not Select from 2 different restaurants at same time empty your cart first'],401);
            }
         
-        }
+    }
+    
     
 
     /**
@@ -148,8 +156,64 @@ class CartItemController extends Controller
      * @param  \App\Models\Model\CartItem  $cartItem
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CartItem $cartItem)
+    public function destroyCartItem(Restaurant $restaurant,Cart $cart ,CartItem $cartitem)
     {
-        //
+        $this->CartUserCheck($cart);
+        $cartitem->delete();
+        $cart->sub_total = $cart->cartitems->sum('price'); 
+
+        if($cart->sub_total ==0){
+        $cart->total_price =0;
+        $cart->delete();
+        return response(null,Response::HTTP_NO_CONTENT);
+        }
+
+        else{
+        $cart->total_price=$cart->sub_total + $restaurant->delivery_fees;
+        $cart->save();
+        return response(['cart' => new CartResource($cart)],
+        Response::HTTP_CREATED);
+        }
+       
+       
+        
+    }
+
+
+
+    public function removeFromCart(Restaurant $restaurant, MenuItem $menuitem, Cart $cart ,CartItem $cartitem){
+        $this->CartUserCheck($cart);
+        $cartitem->quantity = $cartitem->quantity-1;
+        $cartitem->price=$cartitem->quantity * $menuitem->price;
+        $cartitem->save();
+
+        if ($cartitem->quantity ==0){
+            $cartitem->delete();
+        }
+        $cart->sub_total = $cart->cartitems->sum('price'); 
+
+        if($cart->sub_total ==0){
+        $cart->total_price =0;
+        $cart->delete();
+        return response(null,Response::HTTP_NO_CONTENT);
+        }
+
+        else{
+        $cart->total_price=$cart->sub_total + $restaurant->delivery_fees;
+        $cart->save();
+        return response(['cart-item'=> new CartItemResource($cartitem)  
+                        ,'cart' => new CartResource($cart)]
+                        , Response::HTTP_CREATED);
+        }
+       
+        
+
+    }
+    public function CartUserCheck($cart) {
+ 
+        if (Auth::id() !== $cart->user_id) {
+            
+            throw new Exception("Not Cart Owner!",1);
+        }
     }
 }

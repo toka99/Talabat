@@ -87,11 +87,11 @@ class CartController extends Controller
      */
     public function destroy(Restaurant $restaurant, Cart $cart)
     {
-        $this->CartUserCheck($cart);
-        if ($cart->total_price==0) {
-            $cart->delete();
-            return response(null,Response::HTTP_NO_CONTENT);
-        }
+        // $this->CartUserCheck($cart);
+        // if ($cart->total_price==0) {
+        //     $cart->delete();
+        //     return response(null,Response::HTTP_NO_CONTENT);
+        // }
         
     }
 

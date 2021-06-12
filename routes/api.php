@@ -93,7 +93,10 @@ Route::group(['middleware' => ['auth:sanctum','role:customer']], function () {
     Route::get('/restaurants/{restaurant}/carts/{cart}/cartitems', [CartItemController::class, 'index'])->name('cartitems.index');
     Route::post('/restaurants/{restaurant}/menuitems/{menuitem}/cartitems', [CartItemController::class, 'addToCart']);
     // Route::put('/restaurants/{restaurant}/menuitems/{menuitem}/cartitems/{cartitem}', [CartItemController::class, 'update']);
-    Route::delete('/restaurants/{restaurant}/menuitems/{menuitem}/cartitems/{cartitem}', [CartItemController::class, 'removeFromCart']);
+    Route::post('/restaurants/{restaurant}/menuitems/{menuitem}/carts/{cart}/cartitems/{cartitem}', [CartItemController::class, 'removeFromCart']);
+    Route::delete('/restaurants/{restaurant}/carts/{cart}/cartitems/{cartitem}', [CartItemController::class, 'destroyCartItem']);
+   
+   
 });
 
 //sanctum
