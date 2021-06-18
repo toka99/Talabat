@@ -18,7 +18,7 @@ class RegisterController extends Controller
             'password' => 'required|min:6',
             'gender' => 'required',
             'date_of_birth' => 'required',
-            'mobile_number' => 'required|digits:12|numeric',
+            'mobile_number' => 'required|digits:12|numeric|unique:users',
 
         ]);
 
@@ -69,7 +69,7 @@ class RegisterController extends Controller
             'password' => 'required|min:6',
             'gender' => 'required',
             'date_of_birth' => 'required',
-            'mobile_number' => 'required|digits:12|numeric',
+            'mobile_number' => 'required|digits:12|numeric|unique:users',
 
         ]);
 

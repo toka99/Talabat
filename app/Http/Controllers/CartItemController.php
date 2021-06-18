@@ -82,9 +82,13 @@ class CartItemController extends Controller
              $cart->save();
              
              return response([
-                 'cart-item'=> new CartItemResource($cartitemcheck)  ,
-                 'cart'     =>   new CartResource($cart)
+                 'cartitem'=> new CartItemResource($cartitemcheck)  ,
+                 'cart'     =>   new CartResource($cart),
+                //  'cartitem type' =>  gettype(new CartItemResource($cartitemcheck) ),
+                //  'cart type' =>  gettype(new CartResource($cart)),
               ],Response::HTTP_CREATED);
+
+             
             
         }
         
@@ -102,8 +106,10 @@ class CartItemController extends Controller
              $cart->save();
 
              return response([
-                 'cart-item'=> new CartItemResource($cartitem)  ,
-                 'cart'     =>   new CartResource($cart)
+                 'cartitem'=> new CartItemResource($cartitem)  ,
+                 'cart'     =>   new CartResource($cart),
+                //  'cartitem type' =>  gettype(new CartItemResource($cartitemcheck) ),
+                //  'cart type' =>  gettype(new CartResource($cart)),
               ],Response::HTTP_CREATED);
             }
         }

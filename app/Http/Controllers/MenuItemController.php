@@ -55,6 +55,7 @@ class MenuItemController extends Controller
         }
 
         else{
+            
         $menucategory->menuitems()->save($menuitem);
         // $restaurant->menuitems()->save($menuitem);
         return response([

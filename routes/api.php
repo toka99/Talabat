@@ -14,6 +14,7 @@ use App\Http\Controllers\MenuCategoryController;
 use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\DeliveryAddressController;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
@@ -98,6 +99,15 @@ Route::group(['middleware' => ['auth:sanctum','role:customer']], function () {
    
    
 });
+
+//delivery_addresses
+Route::group(['middleware' => ['auth:sanctum','role:customer']], function () {
+    Route::get('/deliveryaddresses', [DeliveryAddressController::class, 'index'])->name('deliveryaddresses.index');
+    Route::post('/deliveryaddresses', [DeliveryAddressController::class, 'store']);
+    Route::put('/deliveryaddresses/{deliveryaddress}', [DeliveryAddressController::class, 'update']);
+    Route::delete('/deliveryaddresses/{deliveryaddress}', [DeliveryAddressController::class, 'destroy']);
+});
+
 
 //sanctum
 Route::post('/sanctum/token', function (Request $request) {

@@ -7,6 +7,7 @@ use App\Models\Model\MenuCategory;
 use App\Models\Model\MenuItem;
 use App\Models\Model\Restaurant;
 use App\Models\Model\Cart;
+use App\Models\Model\DeliveryAddress;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -47,6 +48,10 @@ class User extends Authenticatable
         return $this->belongsTo(Cart::class);
     }
 
+    public function deliveryaddresses()
+    {
+        return $this->hasMany(DeliveryAddress::class);
+    }
 
 
     protected $fillable = [
