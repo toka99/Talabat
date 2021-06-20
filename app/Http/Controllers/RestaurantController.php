@@ -131,5 +131,9 @@ class RestaurantController extends Controller
             throw new Exception("Not Restaurant Owner!",1);
         }
     }
+
+    public function search($name) {
+        return Restaurant::where("name","like","%".$name."%")->get();
+    }
 }
  

@@ -110,12 +110,13 @@ Route::group(['middleware' => ['auth:sanctum','role:customer']], function () {
 });
 
 //user
-
-
 Route::group(['middleware' => ['auth:sanctum','role:customer']], function () {
     Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
     Route::put('/users/{user}', [UserController::class, 'update']);
 });
+
+//search and filteration
+Route::get("/restaurants/search/{name}", [RestaurantController::class, 'search']);
 
 
 //sanctum
