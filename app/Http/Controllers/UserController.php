@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUserRequest;
-use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\UpdateUserProfileRequest;
 use App\Repositories\UserRepository;
 use App\Http\Controllers\AppBaseController;
+use App\Http\Resources\UserResource;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Flash;
-use Response;
+use Exception;
 use Hash;
 
 class UserController extends AppBaseController
@@ -71,17 +74,11 @@ class UserController extends AppBaseController
      *
      * @return Response
      */
-    public function show($id)
-    {
-        $user = $this->userRepository->find($id);
+    public function show(User $user)
+    {  
+        $this->ProfileOwnerCheck($user);
+        return new UserResource($user);
 
-        if (empty($user)) {
-            Flash::error('User not found');
-
-            return redirect(route('users.index'));
-        }
-
-        return view('users.show')->with('user', $user);
     }
 
     /**
@@ -112,28 +109,18 @@ class UserController extends AppBaseController
      *
      * @return Response
      */
-    public function update($id, UpdateUserRequest $request)
+    public function update(UpdateUserProfileRequest $request, User $user)
     {
-        $user = $this->userRepository->find($id);
+        
+        $this->ProfileOwnerCheck($user);
+        $user->update($request->all());
+        return response([
+            'data'=> new UserResource($user)
+        ],Response::HTTP_CREATED);
 
-        if (empty($user)) {
-            Flash::error('User not found');
-
-            return redirect(route('users.index'));
-        }
-        $input =  $request->all();
-        if (!empty($input['password'])) {
-            $input['password'] = Hash::make($input['password']);
-        } else {
-            unset($input['password']);
-        }
-        $user = $this->userRepository->update($input, $id);
-
-        Flash::success('User updated successfully.');
-
-        return redirect(route('users.index'));
     }
 
+   
     /**
      * Remove the specified User from storage.
      *
@@ -177,20 +164,13 @@ class UserController extends AppBaseController
         return redirect()->route('users.index');
          }
 
+    public function ProfileOwnerCheck($user) {
+ 
+        if (Auth::id() !== $user->id) {
+                
+                throw new Exception("Not Your Profile!!!!!!!",1);
+            }
+        }
 
-
-        //  public function ban(User $receptionistID)
-        //  {
-        //      $receptionistID->ban();
-        //      return response()->json(['message' => 'User banned!']); 
-        //      return view('admin-views.receptionists');
-        //  }
-     
-        //  public function unBan(User $receptionistID)
-        //  {
-        //      $receptionistID->unBan();
-        //      return response()->json(['message' => 'User Un-banned!']); 
-        //      return view('admin-views.receptionists');
-        //  }
 
 }
