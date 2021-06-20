@@ -117,6 +117,7 @@ Route::group(['middleware' => ['auth:sanctum','role:customer']], function () {
 
 //search and filteration
 Route::get("/restaurants/search/{name}", [RestaurantController::class, 'search']);
+Route::get("/restaurants/filter/{cusine}", [RestaurantController::class, 'filter']);
 
 
 //sanctum

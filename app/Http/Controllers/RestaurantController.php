@@ -135,5 +135,9 @@ class RestaurantController extends Controller
     public function search($name) {
         return Restaurant::where("name","like","%".$name."%")->get();
     }
+
+    public function filter($id) {
+        return Restaurant::where("cusine_id","=",$id)->get();
+    }
 }
  
