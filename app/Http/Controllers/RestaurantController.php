@@ -11,6 +11,7 @@ use App\Http\Resources\Restaurant\RestaurantCollection;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use Exception;
+use DB;
 // use App\Exceptions\Handler;
 
 class RestaurantController extends Controller
@@ -157,6 +158,38 @@ class RestaurantController extends Controller
         ->get();
 
     return $restaurants;
+    }
+
+    public function sortname()
+    {
+        return Restaurant::orderBy('name')->get();
+
+    }
+
+    public function sortnewest()
+    {
+        return Restaurant::orderBy('created_at', 'desc')->get();
+
+    }
+
+    public function sortminorder()
+    {
+        return Restaurant::orderBy('minimum_order')->get();
+
+    }
+
+    public function sortrating()
+    {
+        // return Restaurant::orderBy('minimum_order', 'desc')->get();
+
+        $restaurants = Restaurant::select(DB::raw('restaurants.* , sum(overall_score) as rating'))
+        ->join('ratings', 'restaurants.id', '=', 'ratings.restaurant_id')
+        ->groupBy('restaurant_id')
+        ->orderBy('rating', 'desc')
+        ->get();
+
+        return $restaurants;
+
     }
 }
 

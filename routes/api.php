@@ -115,10 +115,15 @@ Route::group(['middleware' => ['auth:sanctum','role:customer']], function () {
     Route::put('/users/{user}', [UserController::class, 'update']);
 });
 
-//search and filteration
+//search / filter / nearby / sortings
 Route::get("/restaurants/search/{name}", [RestaurantController::class, 'search']);
 Route::get("/restaurants/filter/{cusine}", [RestaurantController::class, 'filter']);
 Route::get("/restaurants/nearby/{latitude}/{longitude}", [RestaurantController::class, 'findNearestRestaurants']);
+Route::get("/sortbyname", [RestaurantController::class, 'sortname']);
+Route::get("/sortbydate", [RestaurantController::class, 'sortnewest']);
+Route::get("/sortbyminorder", [RestaurantController::class, 'sortminorder']);
+Route::get("/sortbyrating", [RestaurantController::class, 'sortrating']);
+
 
 //sanctum
 Route::post('/sanctum/token', function (Request $request) {
