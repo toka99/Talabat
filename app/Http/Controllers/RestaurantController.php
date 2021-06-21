@@ -139,5 +139,26 @@ class RestaurantController extends Controller
     public function filter($id) {
         return Restaurant::where("cusine_id","=",$id)->get();
     }
+
+    public function findNearestRestaurants($latitude, $longitude, $radius = 10000)
+    {
+    $restaurants = Restaurant::selectRaw("id, vendor_id , cusine_id , name, description , logo , location , location_latitude, location_longitude, working_hours ,minimum_order , delivery_fees ,
+                     ( 6371000 * acos( cos( radians(?) ) *
+                       cos( radians( location_latitude ) )
+                       * cos( radians( location_longitude ) - radians(?)
+                       ) + sin( radians(?) ) *
+                       sin( radians( location_latitude ) ) )
+                     ) AS distance", [$latitude, $longitude, $latitude])
+        // ->where('active', '=', 1)
+        ->having("distance", "<", $radius)
+        ->orderBy("distance",'asc')
+        ->offset(0)
+        ->limit(20)
+        ->get();
+
+    return $restaurants;
+    }
 }
+
+
  
