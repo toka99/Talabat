@@ -142,20 +142,16 @@ class RestaurantController extends Controller
     }
 
     public function findNearestRestaurants($latitude, $longitude, $radius = 10000)
-    {
-    $restaurants = Restaurant::selectRaw("id, vendor_id , cusine_id , name, description , logo , location , location_latitude, location_longitude, working_hours ,minimum_order , delivery_fees ,
-                     ( 6371000 * acos( cos( radians(?) ) *
-                       cos( radians( location_latitude ) )
-                       * cos( radians( location_longitude ) - radians(?)
-                       ) + sin( radians(?) ) *
-                       sin( radians( location_latitude ) ) )
-                     ) AS distance", [$latitude, $longitude, $latitude])
-        // ->where('active', '=', 1)
-        ->having("distance", "<", $radius)
-        ->orderBy("distance",'asc')
-        ->offset(0)
-        ->limit(20)
-        ->get();
+    {              
+
+        $restaurants = collect(DB::select('select * , ( 6371000 * acos( cos( radians($latitude) ) 
+                                                             * cos( radians( location_latitude ) )
+                                                             * cos( radians( location_longitude ) - radians($longitude) )
+                                                             + sin( radians($latitude) ) 
+                                                             * sin( radians( location_latitude ) ) ) ) AS distance 
+                                                             from table restaurants 
+                                                             '))->where('distance', '<' , $radius)->sortBy('distance')->values();
+  
 
     return $restaurants;
     }
@@ -184,7 +180,7 @@ class RestaurantController extends Controller
 
         $restaurants = Restaurant::select(DB::raw('restaurants.* , sum(overall_score) as rating'))
         ->join('ratings', 'restaurants.id', '=', 'ratings.restaurant_id')
-        ->groupBy('restaurant_id')
+        ->groupBy('restaurants.id')
         ->orderBy('rating', 'desc')
         ->get();
 

@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateCusineRequest;
 use App\Repositories\CusineRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
+use App\Models\Cusine;
 use Flash;
 use Response;
 
@@ -154,6 +155,9 @@ class CusineController extends AppBaseController
         return redirect(route('cusines.index'));
     }
 
-   
+   public function getallcusines()
+   {
+       return Cusine::all();
+   }
    
 }

@@ -14,6 +14,7 @@ use App\Http\Controllers\MenuCategoryController;
 use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CusineController;
 use App\Http\Controllers\DeliveryAddressController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Hash;
@@ -123,6 +124,10 @@ Route::get("/sortbyname", [RestaurantController::class, 'sortname']);
 Route::get("/sortbydate", [RestaurantController::class, 'sortnewest']);
 Route::get("/sortbyminorder", [RestaurantController::class, 'sortminorder']);
 Route::get("/sortbyrating", [RestaurantController::class, 'sortrating']);
+
+//cuisines
+Route::get("/cuisines", [CusineController::class, 'getallcusines']);
+
 
 
 //sanctum
