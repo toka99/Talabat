@@ -144,13 +144,13 @@ class RestaurantController extends Controller
     public function findNearestRestaurants($latitude, $longitude, $radius = 10000)
     {              
 
-        $restaurants = collect(DB::select('select * , ( 6371000 * acos( cos( radians($latitude) ) 
+        $restaurants = collect(DB::select('select * , ( 6371000 * acos( cos( radians(?) ) 
                                                              * cos( radians( location_latitude ) )
-                                                             * cos( radians( location_longitude ) - radians($longitude) )
-                                                             + sin( radians($latitude) ) 
+                                                             * cos( radians( location_longitude ) - radians(?) )
+                                                             + sin( radians(?) ) 
                                                              * sin( radians( location_latitude ) ) ) ) AS distance 
                                                              from table restaurants 
-                                                             '))->where('distance', '<' , $radius)->sortBy('distance')->values();
+                                                             ',[$latitude,$longitude,$latitude]))->where('distance', '<' , $radius)->sortBy('distance')->values();
   
 
     return $restaurants;
