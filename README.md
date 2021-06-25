@@ -32,9 +32,16 @@ $php artisan db:seed --class=UserSeeder
 $php artisan tinker 
 >> DB::table("model_has_roles")
       ->insert(["role_id"=>"1", "model_type"=>"App\Models\User" , "model_id"=>"1"]);
-      
+           
 * Navigate to http://127.0.0.1:8000/login to go to admin login form 
   email: admin@admin.com
   password: admin123
 
-* Create from the interface at least 3 cuisines     
+* Create from the interface at least 3 cuisines   
+
+
+
+
+
+![erd2](https://user-images.githubusercontent.com/79705893/123463779-3ac63b00-d5ec-11eb-990a-4683eb548ff7.PNG)
+
