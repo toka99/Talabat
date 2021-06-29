@@ -40,11 +40,11 @@ $php artisan tinker
 * Create from the interface at least 3 cuisines   
 
 Contributors :
-*Maryem Mohamed Sherif
-*Rewan Mohammed Naguib (Team Leader)
-*Sara Ramadan El Shater
-*Somaia Bahaa El Din Hussein
-*Toka Mohamed Attiah
+Maryem Mohamed Sherif-
+Rewan Mohammed Naguib (Team Leader)-
+Sara Ramadan El Shater-
+Somaia Bahaa El Din Hussein-
+Toka Mohamed Attiah-
 
 
 Deployment Link :
