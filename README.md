@@ -39,6 +39,17 @@ $php artisan tinker
 
 * Create from the interface at least 3 cuisines   
 
+Contributors :
+Maryem Mohamed Sherif
+Rewan Mohammed Naguib (Team Leader)
+Sara Ramadan El Shater
+Somaia Bahaa El Din Hussein
+Toka Mohamed Attiah
+
+
+Deployment Link :
+https://blooming-atoll-60288.herokuapp.com
+
 
 
 
